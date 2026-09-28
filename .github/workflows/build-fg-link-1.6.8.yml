@@ -11,14 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Validate private source configuration
+      - name: Validate private build inputs
         env:
           SRC_REPO: ${{ secrets.FG_SOURCE_REPO }}
           SRC_TOKEN: ${{ secrets.FG_SOURCE_TOKEN }}
+          KEYSTORE_B64: ${{ secrets.FG_RCK_KEYSTORE_B64 }}
+          STORE_PASSWORD: ${{ secrets.FG_RCK_KEYSTORE_PASSWORD }}
         run: |
           set -euo pipefail
           test -n "$SRC_REPO"
           test -n "$SRC_TOKEN"
+          test -n "$KEYSTORE_B64"
+          test -n "$STORE_PASSWORD"
 
       - name: Checkout private engineering source
         env:
@@ -26,9 +30,9 @@ jobs:
           SRC_TOKEN: ${{ secrets.FG_SOURCE_TOKEN }}
         run: |
           set -euo pipefail
-          git -c credential.helper= clone --quiet             "https://x-access-token:${SRC_TOKEN}@github.com/${SRC_REPO}.git" source
+          git -c credential.helper= clone --quiet "https://x-access-token:${SRC_TOKEN}@github.com/${SRC_REPO}.git" source
           cd source
-          git checkout --quiet release/1.6.8-hardened-fg
+          git checkout --quiet 380fb7e1e8e7ccb89e828cb47213040919668432
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -41,46 +45,114 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - name: Apply hardened release policy
+        working-directory: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          build = Path("app/build.gradle")
+          text = build.read_text(encoding="utf-8")
+          old = """        release {
+              manifestPlaceholders = [appLabel: 'FG Link']
+              minifyEnabled false
+              proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+              if (stableSigningReady) {
+                  signingConfig signingConfigs.stableRelease
+              }
+          }"""
+          new = """        release {
+              manifestPlaceholders = [appLabel: 'FG Link']
+              minifyEnabled true
+              shrinkResources true
+              debuggable false
+              jniDebuggable false
+              zipAlignEnabled true
+              proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+              if (stableSigningReady) {
+                  signingConfig signingConfigs.stableRelease
+              }
+          }"""
+          if old not in text:
+              raise SystemExit("release block not found")
+          build.write_text(text.replace(old, new), encoding="utf-8")
+
+          manifest = Path("app/src/main/AndroidManifest.xml")
+          m = manifest.read_text(encoding="utf-8")
+          if 'android:allowBackup="true"' not in m:
+              raise SystemExit("allowBackup marker not found")
+          manifest.write_text(m.replace('android:allowBackup="true"', 'android:allowBackup="false"\n        android:fullBackupContent="false"'), encoding="utf-8")
+
+          Path("app/proguard-rules.pro").write_text("""# FG Link 1.6.8 hardened public release
+          -repackageclasses f
+          -allowaccessmodification
+          -adaptclassstrings
+          -renamesourcefileattribute SourceFile
+          -keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
+          -assumenosideeffects class android.util.Log {
+              public static *** v(...);
+              public static *** d(...);
+              public static *** i(...);
+              public static *** w(...);
+              public static *** e(...);
+          }
+          """, encoding="utf-8")
+          PY
+
       - name: Prepare official signing
         env:
           KEYSTORE_B64: ${{ secrets.FG_RCK_KEYSTORE_B64 }}
           STORE_PASSWORD: ${{ secrets.FG_RCK_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.FG_RCK_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.FG_RCK_KEY_PASSWORD }}
         run: |
           set -euo pipefail
-          test -n "$KEYSTORE_B64"
-          test -n "$STORE_PASSWORD"
-          test -n "$KEY_ALIAS"
-          test -n "$KEY_PASSWORD"
-          KEYSTORE="$RUNNER_TEMP/fg-link-release.keystore"
+          KEYSTORE="$RUNNER_TEMP/fg-link-release.jks"
           printf '%s' "$KEYSTORE_B64" | base64 --decode > "$KEYSTORE"
           chmod 600 "$KEYSTORE"
           echo "FG_RCK_KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
           echo "FG_RCK_KEYSTORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
-          echo "FG_RCK_KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
-          echo "FG_RCK_KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+          echo "FG_RCK_KEY_ALIAS=fg-link-release" >> "$GITHUB_ENV"
+          echo "FG_RCK_KEY_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
 
-      - name: Test and build hardened release
+      - name: Test, lint and build hardened release
         working-directory: source
         run: gradle --no-daemon clean testDebugUnitTest lintDebug assembleRelease
 
-      - name: Verify APK
+      - name: Verify hardened APK
         working-directory: source
+        shell: bash
         run: |
           set -euo pipefail
           APK="app/build/outputs/apk/release/app-release.apk"
           test -s "$APK"
           test -s app/build/outputs/mapping/release/mapping.txt
+
+          AAPT="$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -n 1)"
           APKSIGNER="$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)"
+          test -n "$AAPT"
+          test -n "$APKSIGNER"
+
+          "$AAPT" dump badging "$APK" | tee /tmp/badging.txt
+          grep -q "package: name='com.fgmachines.rck' versionCode='36' versionName='1.6.8'" /tmp/badging.txt
+          grep -q "application-label:'FG Link'" /tmp/badging.txt
           "$APKSIGNER" verify --print-certs "$APK"
+
+          unzip -p "$APK" 'classes*.dex' 2>/dev/null | strings > /tmp/dex-strings.txt || true
+          if grep -qE 'MttlProtocol|MttlProvisioner|MttlControllerServer|LocalApiServer|DeviceBoundSigner' /tmp/dex-strings.txt; then
+            echo "Sensitive implementation class names remain visible after R8."
+            exit 1
+          fi
+
           mkdir -p ../publish
-          cp "$APK" ../publish/FG-Link-1.6.8.apk
-          sha256sum ../publish/FG-Link-1.6.8.apk > ../publish/SHA256SUMS.txt
+          cp "$APK" ../publish/FG-Link-1.6.8-Hardened.apk
+          sha256sum ../publish/FG-Link-1.6.8-Hardened.apk | tee ../publish/SHA256SUMS.txt
+          "$APKSIGNER" verify --print-certs "$APK" > ../publish/CERTIFICATE.txt
+          printf 'FG Link 1.6.8 Hardened\nPackage: com.fgmachines.rck\nVersion code: 36\nPublisher: FG Machines\nR8 optimized: yes\n' > ../publish/RELEASE-INFO.txt
 
       - name: Upload official publication bundle
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Link-1.6.8-Official
+          name: FG-Link-1.6.8-Hardened-Official
           path: publish/
           if-no-files-found: error
