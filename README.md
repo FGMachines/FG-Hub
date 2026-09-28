@@ -18,3 +18,15 @@ The public APK will be accompanied by a SHA-256 checksum so users can verify tha
 Do not trust repackaged or re-signed copies distributed by third parties. Verify the package name, version and published SHA-256 checksum before installation.
 
 FG Machines signing material, build secrets and private engineering material are never stored in this public repository.
+
+
+## الاستخدام
+
+- [دليل الاستخدام بالعربية](docs/USER-GUIDE-AR.md)
+- [بنية الخادم الاختياري والحماية](docs/SERVER-ARCHITECTURE-AR.md)
+
+سيتم إضافة لقطات شاشة حقيقية من الإصدار النهائي داخل `docs/images/` بعد نجاح Build النهائي؛ لن نستخدم صورًا تجريبية.
+
+## مبدأ التشغيل
+
+FG Link يعمل محليًا أولًا. الخادم الخارجي اختياري ويمكن إضافته لاحقًا بدون كسر التحكم المحلي أو ZeroTier.
