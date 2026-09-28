@@ -2,6 +2,10 @@ name: Build FG Link 1.6.8
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-fg-link-1.6.8.yml'
 
 permissions:
   contents: read
@@ -13,26 +17,22 @@ jobs:
     steps:
       - name: Validate private build inputs
         env:
-          SRC_REPO: ${{ secrets.FG_SOURCE_REPO }}
           SRC_TOKEN: ${{ secrets.FG_SOURCE_TOKEN }}
           KEYSTORE_B64: ${{ secrets.FG_RCK_KEYSTORE_B64 }}
           STORE_PASSWORD: ${{ secrets.FG_RCK_KEYSTORE_PASSWORD }}
         run: |
           set -euo pipefail
-          test -n "$SRC_REPO"
           test -n "$SRC_TOKEN"
           test -n "$KEYSTORE_B64"
           test -n "$STORE_PASSWORD"
 
-      - name: Checkout private engineering source
-        env:
-          SRC_REPO: ${{ secrets.FG_SOURCE_REPO }}
-          SRC_TOKEN: ${{ secrets.FG_SOURCE_TOKEN }}
-        run: |
-          set -euo pipefail
-          git -c credential.helper= clone --quiet "https://x-access-token:${SRC_TOKEN}@github.com/${SRC_REPO}.git" source
-          cd source
-          git checkout --quiet 380fb7e1e8e7ccb89e828cb47213040919668432
+      - name: Checkout isolated FG source
+        uses: actions/checkout@v4
+        with:
+          repository: FGMachines/FG-Link-Source
+          token: ${{ secrets.FG_SOURCE_TOKEN }}
+          path: source
+          persist-credentials: false
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -45,61 +45,17 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Apply hardened release policy
+      - name: Verify hardened release policy
         working-directory: source
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-
-          build = Path("app/build.gradle")
-          text = build.read_text(encoding="utf-8")
-          old = """        release {
-              manifestPlaceholders = [appLabel: 'FG Link']
-              minifyEnabled false
-              proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-              if (stableSigningReady) {
-                  signingConfig signingConfigs.stableRelease
-              }
-          }"""
-          new = """        release {
-              manifestPlaceholders = [appLabel: 'FG Link']
-              minifyEnabled true
-              shrinkResources true
-              debuggable false
-              jniDebuggable false
-              zipAlignEnabled true
-              proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-              if (stableSigningReady) {
-                  signingConfig signingConfigs.stableRelease
-              }
-          }"""
-          if old not in text:
-              raise SystemExit("release block not found")
-          build.write_text(text.replace(old, new), encoding="utf-8")
-
-          manifest = Path("app/src/main/AndroidManifest.xml")
-          m = manifest.read_text(encoding="utf-8")
-          if 'android:allowBackup="true"' not in m:
-              raise SystemExit("allowBackup marker not found")
-          manifest.write_text(m.replace('android:allowBackup="true"', 'android:allowBackup="false"\n        android:fullBackupContent="false"'), encoding="utf-8")
-
-          Path("app/proguard-rules.pro").write_text("""# FG Link 1.6.8 hardened public release
-          -repackageclasses f
-          -allowaccessmodification
-          -adaptclassstrings
-          -renamesourcefileattribute SourceFile
-          -keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
-          -assumenosideeffects class android.util.Log {
-              public static *** v(...);
-              public static *** d(...);
-              public static *** i(...);
-              public static *** w(...);
-              public static *** e(...);
-          }
-          """, encoding="utf-8")
-          PY
+          grep -q "versionName '1.6.8'" app/build.gradle
+          grep -q "versionCode 36" app/build.gradle
+          grep -q "minifyEnabled true" app/build.gradle
+          grep -q "shrinkResources true" app/build.gradle
+          grep -q -- "-repackageclasses f" app/proguard-rules.pro
+          grep -q 'android:allowBackup="false"' app/src/main/AndroidManifest.xml
 
       - name: Prepare official signing
         env:
