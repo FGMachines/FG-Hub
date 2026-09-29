@@ -24,7 +24,7 @@
 - 🔐 **[التحقق من الأصالة والتوقيع](docs/AUTHENTICITY.md)**
 - **Package:** `com.fgmachines.rck`
 - **APK 1.6.14 SHA-256:** `9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94`
-- **Illustrated guide SHA-256:** `668e5aa34e9b5a3b85f623a7012c8257c4530c3abac8bdd26428716a269ee10e`
+- **Illustrated guide SHA-256:** `b9579a9d8daad140de79202ecaf0b5f36f27b1c863db826c0232f537764dacb2`
 - **Signing certificate SHA-256:** `b9ca4a23be53f161a47b5aaf97023d2bbbeebdaf671337d2466fb74cc1f29fdf`
 
 > نزّل النسخة فقط من صفحة FG Machines الرسمية، وراجع الـSHA-256 والتوقيع قبل التثبيت.
@@ -38,7 +38,7 @@
 | الملف | الاستخدام |
 |---|---|
 | **FG-Link-1.6.14-Hardened-Signed.apk** | التطبيق الرسمي الموقّع والمصغّر/المشوّش عبر R8 |
-| **الدليل العربي المصوّر - 54 صفحة** | شرح كامل بالصور والأسهم: Router، هاتف واحد، هاتفين، ZeroTier، IR، الأعطال والاستعادة الآمنة |
+| **الدليل العربي المصوّر - 55 صفحة** | شرح كامل بالصور والأسهم: Router، هاتف واحد، هاتفين، ZeroTier، IR، الأعطال والاستعادة الآمنة |
 | **SHA256SUMS.txt** | التحقق من أن APK لم يتم تعديله |
 | **AUTHENTICITY.md** | بصمة شهادة التوقيع وسجل الإصدار الرسمي |
 
