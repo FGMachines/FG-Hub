@@ -1,0 +1,26 @@
+name: Retag FG Link 1.6.14 to sanitized public tree
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.release-trigger/retag-1.6.14'
+
+permissions:
+  contents: write
+
+jobs:
+  retag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Move release tag to sanitized public commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'FG Machines Release Bot'
+          git config user.email 'fgmachines@proton.me'
+          git tag -f v1.6.14 "$GITHUB_SHA"
+          git push origin refs/tags/v1.6.14 --force
