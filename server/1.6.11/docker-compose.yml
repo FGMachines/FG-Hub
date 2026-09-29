@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fglink
+      POSTGRES_USER: fglink
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    volumes:
+      - fglink_postgres:/var/lib/postgresql/data
+    networks: [backend]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fglink -d fglink"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      FG_LINK_DATABASE_URL: postgresql+psycopg://fglink:${POSTGRES_PASSWORD}@db:5432/fglink
+      FG_LINK_TOKEN_PEPPER: ${FG_LINK_TOKEN_PEPPER:?set FG_LINK_TOKEN_PEPPER}
+      FG_LINK_PANEL_TOKEN: ${FG_LINK_PANEL_TOKEN:?set FG_LINK_PANEL_TOKEN}
+      FG_LINK_CONTROLLER_ONLINE_SECONDS: ${FG_LINK_CONTROLLER_ONLINE_SECONDS:-90}
+      FG_LINK_COMMAND_TTL_SECONDS: ${FG_LINK_COMMAND_TTL_SECONDS:-120}
+    expose: ["8080"]
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [backend]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      FG_LINK_DOMAIN: ${FG_LINK_DOMAIN:?set FG_LINK_DOMAIN}
+      FG_LINK_ACME_EMAIL: ${FG_LINK_ACME_EMAIL:?set FG_LINK_ACME_EMAIL}
+      FG_LINK_ADMIN_USER: ${FG_LINK_ADMIN_USER:-admin}
+      FG_LINK_ADMIN_HASH: ${FG_LINK_ADMIN_HASH:?set FG_LINK_ADMIN_HASH}
+      FG_LINK_PANEL_TOKEN: ${FG_LINK_PANEL_TOKEN:?set FG_LINK_PANEL_TOKEN}
+    ports: ["80:80","443:443","443:443/udp"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [api]
+    networks: [backend]
+
+networks:
+  backend:
+
+volumes:
+  fglink_postgres:
+  caddy_data:
+  caddy_config:
