@@ -1,0 +1,19 @@
+{
+    email {$FG_LINK_ACME_EMAIL}
+}
+
+{$FG_LINK_DOMAIN} {
+    encode zstd gzip
+
+    @panel path /panel /panel/*
+    handle @panel {
+        basic_auth {
+            {$FG_LINK_ADMIN_USER} {$FG_LINK_ADMIN_HASH}
+        }
+        reverse_proxy api:8080 {
+            header_up X-FG-Panel-Token {$FG_LINK_PANEL_TOKEN}
+        }
+    }
+
+    reverse_proxy api:8080
+}
