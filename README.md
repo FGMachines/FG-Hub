@@ -22,6 +22,7 @@
 - 📱 **[تحميل APK الرسمي الموقّع - FG Link 1.6.14](https://github.com/FGMachines/FG-Hub/releases/download/v1.6.14/FG-Link-1.6.14-Hardened-Signed.apk)**
 - 📘 **[تحميل الكتاب العربي المصوّر](https://github.com/FGMachines/FG-Hub/releases/download/v1.6.14/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)**
 - 🔐 **[التحقق من الأصالة والتوقيع](docs/AUTHENTICITY.md)**
+- 🧾 **[سجل النشر والأصالة الرسمي](PROVENANCE.md)**
 - **Package:** `com.fgmachines.rck`
 - **APK 1.6.14 SHA-256:** `9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94`
 - **Illustrated guide SHA-256:** `b9579a9d8daad140de79202ecaf0b5f36f27b1c863db826c0232f537764dacb2`
@@ -110,7 +111,7 @@ FG Link يحتوي على وظائف ريموت للأجهزة المتوافق�
 
 الحماية ترفع تكلفة الهندسة العكسية ولا تجعلها مستحيلة. المرجع الحقيقي للنسخة الرسمية هو توقيع FG Machines + الـhash + سجل النشر.
 
-Read: [Authenticity & verification](docs/AUTHENTICITY.md) • [APK hardening](docs/APK-HARDENING.md) • [Security policy](SECURITY.md)
+Read: [Authenticity & verification](docs/AUTHENTICITY.md) • [Official provenance record](PROVENANCE.md) • [APK hardening](docs/APK-HARDENING.md) • [Security policy](SECURITY.md)
 
 ### Public distribution vs engineering source
 
