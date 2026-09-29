@@ -31,3 +31,12 @@ A copied filename, icon or screenshot is not sufficient to establish authenticit
 ## Publication record
 
 Git commit history, release artifacts, SHA-256 values and the stable signing certificate create a verifiable public publication record for FG Machines releases and help distinguish official builds from repackaged or re-signed copies.
+
+
+## Illustrated Arabic guide
+
+- File: `docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf`
+- Pages: **54**
+- SHA-256: `668e5aa34e9b5a3b85f623a7012c8257c4530c3abac8bdd26428716a269ee10e`
+
+The guide contains the illustrated Router, one-phone, two-phone and ZeroTier setup flows, IR remote requirements, diagnostics, developer/follow-up information, and safe credential recovery guidance. VPS Direct is explicitly marked as **testing / not public**.
