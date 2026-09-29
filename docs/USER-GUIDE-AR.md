@@ -61,9 +61,7 @@ https://raw.githubusercontent.com/FGMachines/FG-Hub/main/releases/1.6.13/FG-Link
 
 ## 5) ربط التطبيق بخادم FG Link VPS
 
-عنوان الخادم الرسمي ثابت داخل التطبيق:
-
-https://link.fgmachines.org
+عنوان الخادم الرسمي مدمج داخل التطبيق ولا يحتاج العميل إلى كتابته، ولا يتم نشره في التوثيق العام.
 
 العميل **لا يكتب عنوان الخادم**.
 
@@ -149,8 +147,6 @@ FG Link يحتفظ بمسار LAN/ZeroTier منفصل عن VPS. يمكن است�
 ## الروابط الرسمية
 
 الموقع: https://fgmachines.org
-
-خادم FG Link: https://link.fgmachines.org
 
 مستودع التوزيع: https://github.com/FGMachines/FG-Hub
 
