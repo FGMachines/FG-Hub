@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FG Link — لوحة الإدارة</title>
+<style>
+:root{color-scheme:dark;--bg:#070a0e;--panel:#0e151d;--line:#7f8b96;--green:#54ff95;--amber:#ffbd59;--blue:#69c8ff;--muted:#93a1ad;--danger:#ff7474}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#14202b 0,#070a0e 38%);color:#edf4f8;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+.shell{max-width:1400px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.top h1{margin:0;font-size:30px}.top p{margin:6px 0;color:var(--muted)}
+.badge{padding:8px 14px;border:1px solid #66737f;border-radius:999px;color:var(--green);background:#0a1118;box-shadow:0 0 16px #54ff9522}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:22px 0}.metric,.card{background:linear-gradient(145deg,#111a23,#0b1118);border:1px solid #65717c;border-radius:17px;box-shadow:0 0 18px #aebbc515;padding:18px}
+.metric span{color:var(--muted)}.metric b{display:block;font-size:28px;margin-top:8px}.ok{color:var(--green)}.amber{color:var(--amber)}.danger{color:var(--danger)}.muted{color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.section-title h2{margin:0}
+input,button{border-radius:10px;border:1px solid #687581;background:#0b131a;color:#f5f8fa;padding:11px 13px;font:inherit}input{min-width:260px;flex:1}button{cursor:pointer}button:hover:not(:disabled){border-color:#d1d9df;box-shadow:0 0 13px #7fd3ff33}button:disabled{opacity:.35;cursor:not-allowed}
+.primary{background:var(--green);border-color:var(--green);color:#04120a;font-weight:800}.warn{background:var(--amber);border-color:var(--amber);color:#1b1000;font-weight:800}.red{color:#ffaaaa;border-color:#a34444}.ghost{background:#101922}
+table{width:100%;border-collapse:collapse;margin-top:14px}th,td{text-align:right;padding:12px 9px;border-bottom:1px solid #27333e;vertical-align:middle}th{color:#c3ced7}.small{font-size:12px;color:var(--muted);direction:ltr;text-align:right}.fp{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;direction:ltr;text-align:left;word-break:break-all}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-left:7px;background:#5a6670}.dot.on{background:var(--green);box-shadow:0 0 10px var(--green)}
+.token{direction:ltr;text-align:left;background:#05090c;border:1px dashed var(--amber);color:#ffe0a5;border-radius:11px;padding:12px;word-break:break-all;margin-top:12px;display:none}
+.notice{margin:12px 0;color:var(--amber);font-size:13px}.card{margin:15px 0;overflow:auto}.outlets{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:10px}.outlet{border:1px solid #33414d;border-radius:14px;padding:10px;background:#091017}.outlet b{display:block;margin-bottom:8px}.togglebtn{width:100%;min-height:54px;border-radius:13px;font-weight:900;font-size:15px;letter-spacing:.2px;transition:.16s ease}.togglebtn.state-on{background:#0f4f2c;border-color:var(--green);color:#baffd1;box-shadow:inset 0 0 0 1px #54ff9540,0 0 16px #54ff9520}.togglebtn.state-off{background:#4a1719;border-color:var(--danger);color:#ffd0d0;box-shadow:inset 0 0 0 1px #ff747438,0 0 14px #ff74741b}.togglebtn.state-pending{background:#503a11;border-color:var(--amber);color:#ffe1a4}.togglebtn.state-unknown{background:#17212a;border-color:#56636e;color:#aeb8c0}.outlet-hint{margin-top:6px;text-align:center;font-size:11px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,24px);z-index:9999;min-width:260px;max-width:min(560px,calc(100vw - 32px));padding:12px 16px;border:1px solid #63717d;border-radius:12px;background:#0d161e;color:#eef5f8;box-shadow:0 12px 40px #000a;opacity:0;pointer-events:none;transition:.2s ease;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.toast.ok{border-color:#3a9f67}.toast.err{border-color:#b95757;color:#ffd0d0}
+.modal-backdrop{position:fixed;inset:0;z-index:10000;background:#000a;display:flex;align-items:center;justify-content:center;padding:18px}.modal-box{width:min(520px,100%);background:#0d161e;border:1px solid #687581;border-radius:18px;padding:18px;box-shadow:0 22px 70px #000c}.modal-box h3{margin:0 0 8px}.modal-box p{margin:0 0 14px;color:var(--muted);line-height:1.7}.modal-box input{width:100%;margin-bottom:14px}.modal-actions{display:flex;gap:8px;justify-content:flex-start}.modal-actions button{min-width:110px}
+.hidden{display:none}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.outlets{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.shell{padding:15px}.grid,.outlets{grid-template-columns:1fr}input{min-width:100%}}
+</style>
+</head>
+<body><main class="shell">
+<div class="top"><div><h1>FG Link · VPS Control</h1><p>إنشاء API من بصمة الهاتف والتحكم في مخارج المشتركات عبر الهاتف المرتبط.</p></div><div class="badge">Fingerprint → API → Control</div></div>
+
+<div class="grid">
+<div class="metric"><span>الهواتف المسجلة</span><b id="mAccounts">—</b></div>
+<div class="metric"><span>هواتف Online</span><b id="mOnline" class="ok">—</b></div>
+<div class="metric"><span>المشتركات</span><b id="mStrips">—</b></div>
+<div class="metric"><span>مشتركات Online</span><b id="mStripsOnline" class="ok">—</b></div>
+</div>
+
+<section class="card">
+<div class="section-title"><h2>إنشاء API من بصمة الهاتف</h2><span class="small">لا نكتب اسم العميل — البصمة هي المعرّف</span></div>
+<div class="notice">انسخ بصمة الهاتف ذات 64 خانة من تطبيق FG Link والصقها هنا. سيتم إنشاء API مرتبط بهذه البصمة فقط.</div>
+<div class="row"><input id="newFingerprint" maxlength="64" class="fp" placeholder="64-character phone fingerprint"><button class="primary" onclick="createAccount()">إنشاء API</button></div>
+<div id="tokenBox" class="token"></div>
+</section>
+
+<section class="card">
+<div class="section-title"><h2>الهواتف</h2><button class="ghost" onclick="refreshAll()">تحديث</button></div>
+<table><thead><tr><th>بصمة الهاتف</th><th>الحالة</th><th>الاتصال</th><th>المشتركات</th><th>آخر اتصال</th><th>الإجراءات</th></tr></thead><tbody id="accountsBody"></tbody></table>
+</section>
+
+<section id="stripsCard" class="card hidden">
+<div class="section-title"><div><h2>التحكم في المشتركات</h2><div id="selectedFingerprint" class="small fp"></div></div><button class="ghost" onclick="refreshSelectedStrips()">تحديث</button></div>
+<div class="notice">الأمر ينتقل من الخادم إلى تطبيق FG Link عبر HTTPS، ثم ينفذه الهاتف محليًا على المشترك. الخادم لا يخزن Wi‑Fi أو ZeroTier أو MAC الخام.</div>
+<div id="stripsBody"></div>
+</section>
+
+<section class="card">
+<div class="section-title"><h2>سجل النشاط</h2><span class="small">آخر 80 حدثًا إداريًا وتشغيليًا</span></div>
+<table><thead><tr><th>الوقت</th><th>الحدث</th><th>الحساب</th><th>التفاصيل</th></tr></thead><tbody id="activityBody"></tbody></table>
+</section>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="modalBackdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal-box">
+  <h3 id="modalTitle"></h3>
+  <p id="modalText"></p>
+  <input id="modalInput" class="fp hidden" autocomplete="off">
+  <div class="modal-actions">
+   <button id="modalConfirm" class="primary">متابعة</button>
+   <button id="modalCancel" class="ghost">إلغاء</button>
+  </div>
+ </div>
+</div>
+<script>
+const api=async(url,opts={})=>{
+ const r=await fetch(url,{headers:{'Content-Type':'application/json',...(opts.headers||{})},...opts});
+ const j=await r.json().catch(()=>({}));
+ if(!r.ok) throw new Error(j.detail||('HTTP '+r.status));
+ return j;
+};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=s=>s?new Date(s).toLocaleString('ar-EG'):'—';
+const validFp=s=>/^[0-9a-fA-F]{64}$/.test(String(s||'').trim());
+let selectedAccountId='', selectedAccountFingerprint='', toastTimer=0;
+function notify(message,type='ok'){
+ clearTimeout(toastTimer);
+ toast.textContent=message;
+ toast.className='toast '+type+' show';
+ toastTimer=setTimeout(()=>{toast.className='toast '+type},2600);
+}
+function ask({title,text,input=false,inputValue='',confirmLabel='متابعة'}){
+ return new Promise(resolve=>{
+  modalTitle.textContent=title;
+  modalText.textContent=text;
+  modalInput.classList.toggle('hidden',!input);
+  modalInput.value=inputValue;
+  modalConfirm.textContent=confirmLabel;
+  modalBackdrop.classList.remove('hidden');
+  if(input) setTimeout(()=>modalInput.focus(),30);
+  const done=value=>{
+   modalBackdrop.classList.add('hidden');
+   modalConfirm.onclick=null;modalCancel.onclick=null;
+   resolve(value);
+  };
+  modalConfirm.onclick=()=>done(input?modalInput.value:true);
+  modalCancel.onclick=()=>done(null);
+ });
+}
+
+async function refreshAccounts(){
+ const data=await api('/panel/api/accounts'), rows=data.accounts;
+ mAccounts.textContent=rows.length;
+ mOnline.textContent=rows.filter(x=>x.device_online).length;
+ mStrips.textContent=rows.reduce((n,x)=>n+x.strip_count,0);
+ mStripsOnline.textContent=rows.reduce((n,x)=>n+x.online_strip_count,0);
+ accountsBody.innerHTML=rows.map(a=>`<tr>
+ <td><div class="fp"><b>${esc(a.fingerprint)}</b></div><div class="small">…${esc(String(a.fingerprint).slice(-12))}</div></td>
+ <td>${a.active?'<span class="ok">Active</span>':'<span class="danger">Disabled</span>'}</td>
+ <td><span class="dot ${a.device_online?'on':''}"></span>${a.device_online?'Online':(a.last_seen_at?'Offline':'بانتظار أول اتصال')}</td>
+ <td>${a.online_strip_count} / ${a.strip_count}</td>
+ <td>${fmt(a.last_seen_at)}</td>
+ <td><div class="row">
+   <button class="primary" onclick="showStrips('${a.id}','${a.fingerprint}')">تحكم</button>
+   <button class="warn" onclick="rotateToken('${a.id}')">API جديد</button>
+   <button class="ghost" onclick="rebindPhone('${a.id}')">تغيير الهاتف</button>
+   <button class="${a.active?'red':'primary'}" onclick="setState('${a.id}',${!a.active})">${a.active?'تعطيل':'تفعيل'}</button>
+ </div></td></tr>`).join('')||'<tr><td colspan="6" class="muted">لا توجد هواتف مسجلة بعد.</td></tr>';
+}
+async function refreshActivity(){
+ const data=await api('/panel/api/activity?limit=80');
+ activityBody.innerHTML=data.events.map(e=>`<tr><td>${fmt(e.created_at)}</td><td>${esc(e.event_type)}</td><td class="small">${esc(e.account_id||'—')}</td><td class="small">${esc(JSON.stringify(e.detail))}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">لا يوجد نشاط بعد.</td></tr>';
+}
+function revealToken(token){
+ tokenBox.style.display='block';
+ tokenBox.innerHTML='<b>انسخ API الآن — لن يظهر مرة أخرى:</b><br>'+esc(token);
+ if(navigator.clipboard) navigator.clipboard.writeText(token).catch(()=>{});
+}
+async function createAccount(){
+ const fingerprint=newFingerprint.value.trim().toLowerCase();
+ if(!validFp(fingerprint)) return notify('بصمة الهاتف يجب أن تكون 64 خانة Hex كما تظهر في تطبيق FG Link','err');
+ try{
+  const r=await api('/panel/api/accounts',{method:'POST',body:JSON.stringify({device_fingerprint:fingerprint})});
+  newFingerprint.value='';revealToken(r.api_token);notify('تم إنشاء API وربطه ببصمة الهاتف');await refreshAll();
+ }catch(e){notify(e.message,'err')}
+}
+async function rotateToken(id){
+ const ok=await ask({title:'إنشاء API جديد',text:'سيتم إلغاء API القديم فورًا وإنشاء API جديد لنفس بصمة الهاتف.',confirmLabel:'إنشاء API'});
+ if(!ok) return;
+ try{const r=await api('/panel/api/accounts/'+id+'/rotate-token',{method:'POST'});revealToken(r.api_token);notify('تم إنشاء API جديد');await refreshAll()}catch(e){notify(e.message,'err')}
+}
+async function rebindPhone(id){
+ const fp=await ask({title:'تغيير الهاتف',text:'ألصق بصمة الهاتف الجديدة. سيتم إلغاء كل API قديم وربط الحساب بالبصمة الجديدة.',input:true,confirmLabel:'ربط الهاتف'});
+ if(fp===null) return;
+ const fingerprint=String(fp).trim().toLowerCase();
+ if(!validFp(fingerprint)) return notify('البصمة غير صالحة','err');
+ try{
+  const r=await api('/panel/api/accounts/'+id+'/rebind',{method:'POST',body:JSON.stringify({device_fingerprint:fingerprint})});
+  revealToken(r.api_token);notify('تم ربط الهاتف الجديد وإنشاء API جديد');await refreshAll();
+  if(selectedAccountId===id){selectedAccountFingerprint=fingerprint;selectedFingerprint.textContent=fingerprint;}
+ }catch(e){notify(e.message,'err')}
+}
+async function setState(id,active){
+ try{await api('/panel/api/accounts/'+id+'/state',{method:'POST',body:JSON.stringify({active})});notify(active?'تم تفعيل الهاتف':'تم تعطيل الهاتف');await refreshAll()}catch(e){notify(e.message,'err')}
+}
+async function showStrips(id,fingerprint){
+ selectedAccountId=id;selectedAccountFingerprint=fingerprint;
+ selectedFingerprint.textContent=fingerprint;
+ stripsCard.classList.remove('hidden');
+ await refreshSelectedStrips();
+ stripsCard.scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function refreshSelectedStrips(){
+ if(!selectedAccountId) return;
+ try{
+  const r=await api('/panel/api/accounts/'+selectedAccountId+'/strips');
+  stripsBody.innerHTML=r.strips.length?r.strips.map(s=>{
+    return `<div class="card" style="margin:12px 0;padding:14px">
+      <div class="section-title"><div><b>${s.online?'🟢':'⚫'} ${esc(s.display_name)}</b><div class="small">${s.online?'Online':'Offline'} · آخر اتصال ${fmt(s.last_seen_at)}</div></div></div>
+      <div class="outlets" style="margin-top:10px">
+       ${(s.outlets||[]).map(state=>{
+         const offline=!s.online;
+         const pending=!!state.pending;
+         const known=!!state.known;
+         let cls='state-unknown',label='غير معروف',hint='بانتظار حالة التطبيق',disabled='disabled',next='false';
+         if(pending){
+           cls='state-pending';
+           label=state.pending_on?'جارٍ التشغيل…':'جارٍ الإغلاق…';
+           hint='تم إرسال الأمر للهاتف';
+         }else if(known){
+           cls=state.on?'state-on':'state-off';
+           label=state.on?'متصل':'مغلق';
+           hint=offline?'المشترك غير متصل':(state.on?'اضغط للإغلاق':'اضغط للتشغيل');
+           disabled=offline?'disabled':'';
+           next=state.on?'false':'true';
+         }
+         return `<div class="outlet"><b>المخرج ${state.outlet}</b><button class="togglebtn ${cls}" ${disabled} onclick="queueCommand('${s.id}',${state.outlet},${next})">${label}</button><div class="outlet-hint">${hint}</div></div>`;
+       }).join('')}
+      </div>
+    </div>`;
+  }).join(''):'<div class="muted">لا توجد مشتركات متزامنة من هذا الهاتف حتى الآن.</div>';
+ }catch(e){notify(e.message,'err')}
+}
+async function queueCommand(stripId,outlet,on){
+ if(!selectedAccountId) return;
+ try{
+  await api('/panel/api/accounts/'+selectedAccountId+'/strips/'+stripId+'/commands',{method:'POST',body:JSON.stringify({outlet,on})});
+  notify((on?'تم إرسال أمر تشغيل ':'تم إرسال أمر إغلاق ')+'المخرج '+outlet);
+  await refreshSelectedStrips();
+  setTimeout(()=>refreshSelectedStrips().catch(()=>{}),1200);
+ }catch(e){notify(e.message,'err')}
+}
+async function refreshAll(){await Promise.all([refreshAccounts(),refreshActivity()]);if(selectedAccountId)await refreshSelectedStrips()}
+refreshAll().catch(e=>notify(e.message,'err'));
+setInterval(()=>{refreshAccounts().catch(()=>{});if(selectedAccountId)refreshSelectedStrips().catch(()=>{})},3000);
+setInterval(()=>refreshActivity().catch(()=>{}),10000);
+</script></body></html>
