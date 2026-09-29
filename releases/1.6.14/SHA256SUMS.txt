@@ -1,1 +1,2 @@
-9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94  publish/FG-Link-1.6.14-Hardened-Signed.apk
+9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94  FG-Link-1.6.14-Hardened-Signed.apk
+0098d5ba5567321158c93844c57cd9a50f34ab84bdeca2961912a5a6529939fb  FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf
