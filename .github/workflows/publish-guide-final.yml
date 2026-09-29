@@ -1,46 +1,105 @@
-name: Publish FG Link illustrated guide final
+name: Repair FG Link 1.6.14 illustrated guide
 
 on:
   push:
     branches: [ main ]
     paths:
-      - '.release-input/final-book/READY'
+      - '.github/workflows/publish-guide-final.yml'
+      - 'tools/build_guide.py'
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  publish:
+  repair-guide:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Reconstruct verified PDF
+      - name: Install PDF dependencies
         shell: bash
         run: |
           set -euo pipefail
-          cat .release-input/final-book/part-*.b64 | base64 --decode > /tmp/fg-link-guide.pdf.xz
-          echo '12f6b8c9e941c341ae92ccc49a41238672b2753f8a41da9b091fb26cc3be472e  /tmp/fg-link-guide.pdf.xz' | sha256sum -c -
-          xz -dc /tmp/fg-link-guide.pdf.xz > /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf
-          echo 'b9579a9d8daad140de79202ecaf0b5f36f27b1c863db826c0232f537764dacb2  /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf' | sha256sum -c -
-          test "$(git hash-object /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)" = "9df3ae452a746ab54a776fc7bb8bd3d72783fc9d"
-          test "$(head -c 5 /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)" = "%PDF-"
-          test "$(stat -c %s /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)" -gt 500000
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils fonts-noto-core fonts-noto-extra
+          python -m pip install --upgrade pip
+          python -m pip install weasyprint
 
-      - name: Publish and remove staging material
+      - name: Build and verify repaired 55-page PDF
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p docs
-          cp /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf
+          python tools/build_guide.py
+          PDF='docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf'
+          test "$(head -c 5 "$PDF")" = '%PDF-'
+          test "$(pdfinfo "$PDF" | awk '/^Pages:/ {print $2}')" = '55'
+          test "$(stat -c %s "$PDF")" -gt 100000
+          sha256sum "$PDF"
+
+      - name: Refresh published hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          PDF='docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf'
+          APK='releases/1.6.14/FG-Link-1.6.14-Hardened-Signed.apk'
+          GUIDE_HASH="$(sha256sum "$PDF" | awk '{print $1}')"
+          APK_HASH="$(sha256sum "$APK" | awk '{print $1}')"
+          export GUIDE_HASH APK_HASH
+          python - <<'PY'
+          from pathlib import Path
+          import os, re
+          gh = os.environ['GUIDE_HASH']
+          readme = Path('README.md')
+          s = readme.read_text(encoding='utf-8')
+          s, n = re.subn(r'(- \*\*Illustrated guide SHA-256:\*\* `)[0-9a-f]{64}(`)', rf'\g<1>{gh}\g<2>', s)
+          if n != 1:
+              raise SystemExit(f'README guide hash replacement count={n}')
+          readme.write_text(s, encoding='utf-8')
+
+          auth = Path('docs/AUTHENTICITY.md')
+          s = auth.read_text(encoding='utf-8')
+          marker = '## Illustrated Arabic guide'
+          before, sep, after = s.partition(marker)
+          if not sep:
+              raise SystemExit('Illustrated guide section missing')
+          after, n = re.subn(r'(- SHA-256: `)[0-9a-f]{64}(`)', rf'\g<1>{gh}\g<2>', after, count=1)
+          if n != 1:
+              raise SystemExit(f'AUTHENTICITY guide hash replacement count={n}')
+          auth.write_text(before + sep + after, encoding='utf-8')
+          PY
+          printf '%s  %s\n%s  %s\n'             "$APK_HASH" 'FG-Link-1.6.14-Hardened-Signed.apk'             "$GUIDE_HASH" 'FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf'             > releases/1.6.14/SHA256SUMS.txt
+
+      - name: Commit repaired documentation
+        shell: bash
+        run: |
+          set -euo pipefail
           git config user.name 'FG Machines Documentation Bot'
           git config user.email 'fgmachines@proton.me'
-          git add docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf
-          git rm -r .release-input/final-book
-          git rm .github/workflows/publish-guide-final.yml
-          git commit -m 'Publish final FG Link illustrated Arabic guide'
-          git push
+          git add docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf                   README.md                   docs/AUTHENTICITY.md                   releases/1.6.14/SHA256SUMS.txt
+          if git diff --cached --quiet; then
+            echo 'No documentation changes to commit.'
+          else
+            git commit -m 'Repair FG Link 1.6.14 illustrated Arabic guide'
+            git push
+          fi
+
+      - name: Replace broken GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release upload v1.6.14             docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf             releases/1.6.14/SHA256SUMS.txt             --clobber
+
+      - name: Final release verification
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release view v1.6.14 --json assets --jq '.assets[] | [.name,.size] | @tsv'
