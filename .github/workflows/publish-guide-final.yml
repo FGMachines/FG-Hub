@@ -24,10 +24,10 @@ jobs:
         run: |
           set -euo pipefail
           cat .release-input/final-book/part-*.b64 | base64 --decode > /tmp/fg-link-guide.pdf.xz
-          echo 'fdf0c972930807639e13a82acf2e548d66c88c7a134c067744647194630b9b33  /tmp/fg-link-guide.pdf.xz' | sha256sum -c -
+          echo '12f6b8c9e941c341ae92ccc49a41238672b2753f8a41da9b091fb26cc3be472e  /tmp/fg-link-guide.pdf.xz' | sha256sum -c -
           xz -dc /tmp/fg-link-guide.pdf.xz > /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf
-          echo '56c93e85aa5aee10716e385b4d8e514c6a2eea541031a9868d6fb2af0d73763a  /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf' | sha256sum -c -
-          test "$(git hash-object /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)" = "198d979368646b465f181be9b7d395e758877c6a"
+          echo 'b9579a9d8daad140de79202ecaf0b5f36f27b1c863db826c0232f537764dacb2  /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf' | sha256sum -c -
+          test "$(git hash-object /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)" = "d7dec41533285ca78cdb755edc0f3af509d7dfae"
           test "$(head -c 5 /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)" = "%PDF-"
           test "$(stat -c %s /tmp/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)" -gt 500000
 
