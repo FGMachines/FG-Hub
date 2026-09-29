@@ -6,7 +6,7 @@ Official FG Machines distribution repository for **FG Link**.
 
 - Product: FG Link
 - Android package: `com.fgmachines.rck`
-- Public release target: **1.6.8**
+- Public release target: **1.6.11**
 - Publisher: **FG Machines**
 - Distribution model: official compiled Android APK
 - Source code is not published in this repository.
@@ -29,4 +29,6 @@ FG Machines signing material, build secrets and private engineering material are
 
 ## مبدأ التشغيل
 
-FG Link يعمل محليًا أولًا. الخادم الخارجي اختياري ويمكن إضافته لاحقًا بدون كسر التحكم المحلي أو ZeroTier.
+FG Link يعمل محليًا أولًا، مع خادم VPS فعّال للإدارة والتحكم عن بُعد. التطبيق يعرض بصمة هاتف مكوّنة من 64 خانة؛ تُستخدم البصمة لإنشاء API مرتبط بهذا الهاتف بدل كتابة أسماء العملاء. يظل LAN وZeroTier متاحين ولا يعتمد التشغيل المحلي على الخادم.
+
+إصدار الخادم الحالي: **1.6.11** داخل `server/1.6.11/`.
