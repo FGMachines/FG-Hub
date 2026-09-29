@@ -146,7 +146,6 @@ Read: [Authenticity & verification](docs/AUTHENTICITY.md) • [APK hardening](do
 ## Official FG Machines links
 
 - Website: https://fgmachines.org
-- FG Link VPS: https://link.fgmachines.org
 - Facebook page: https://www.facebook.com/share/1T7r3WpH8Y/
 - Developer profile: https://www.facebook.com/share/1EKVAyZZ2C/
 - Email: info@fgmachines.org
