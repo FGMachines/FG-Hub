@@ -1,6 +1,6 @@
-# دليل استخدام FG Link 1.6.13 — العربية
+# دليل استخدام FG Link 1.6.14 — العربية
 
-هذا الدليل يشرح الاستخدام الكامل للنسخة الرسمية **FG Link 1.6.13 Build 42** المنشورة بواسطة **FG Machines**.
+هذا الدليل يشرح الاستخدام الكامل للنسخة الرسمية **FG Link 1.6.14 Build 43** المنشورة بواسطة **FG Machines**.
 
 ## المتطلبات
 
@@ -12,15 +12,15 @@
 
 ## تنزيل النسخة الرسمية
 
-اسم الملف الرسمي: **FG-Link-1.6.13-Hardened-Signed.apk**
+اسم الملف الرسمي: **FG-Link-1.6.14-Hardened-Signed.apk**
 
 SHA-256:
 
-327f639f73e192c642c2fdd75af842cfd4a5825d6c26d87d3ec64ebc6dbc3824
+9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94
 
 رابط التحميل المباشر من GitHub:
 
-https://raw.githubusercontent.com/FGMachines/FG-Hub/main/releases/1.6.13/FG-Link-1.6.13-Hardened-Signed.apk
+https://raw.githubusercontent.com/FGMachines/FG-Hub/main/releases/1.6.13/FG-Link-1.6.14-Hardened-Signed.apk
 
 تحقق من SHA-256 قبل التثبيت، ولا تثبت نسخة معاد توقيعها من طرف ثالث.
 
@@ -123,7 +123,7 @@ FG Link يحتفظ بمسار LAN/ZeroTier منفصل عن VPS. يمكن است�
 
 ## 11) إذا ظهر المشترك Online لكن المخارج «غير معروف»
 
-1. تأكد أنك تستخدم Android 1.6.13 Build 42 أو أحدث.
+1. تأكد أنك تستخدم Android 1.6.13 Build 43 أو أحدث.
 2. تأكد أن المشترك متصل فعليًا بالهاتف.
 3. افتح التحكم المحلي وتأكد أن حالة المخارج تظهر.
 4. تأكد أن مزامنة VPS مفعلة.
