@@ -12,7 +12,14 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y
-apt-get install -y ca-certificates curl unzip
+apt-get install -y ca-certificates curl unzip openssl
+if ! command -v docker >/dev/null 2>&1; then
+  apt-get install -y docker.io
+fi
+if ! docker compose version >/dev/null 2>&1; then
+  apt-get install -y docker-compose-v2 || apt-get install -y docker-compose
+fi
+systemctl enable --now docker
 
 WORKDIR="/tmp/fg-link-vps-$$"
 ZIP="$WORKDIR/FG-Link-Server-${VERSION}-VPS.zip"
@@ -30,6 +37,18 @@ test -f "$INSTALLER"
 chmod +x "$INSTALLER"
 
 echo
-echo "Package verified. Starting FG Link VPS installer..."
-echo
-bash "$INSTALLER" </dev/tty
+if [ -f /opt/fg-link-server/.env ]; then
+  echo "Existing FG Link installation detected. Preserving credentials..."
+  SAVED_ENV="$WORKDIR/existing.env"
+  cp /opt/fg-link-server/.env "$SAVED_ENV"
+  cp -a "$WORKDIR/FG-Link-Server-${VERSION}"/. /opt/fg-link-server/
+  cp "$SAVED_ENV" /opt/fg-link-server/.env
+  chmod 600 /opt/fg-link-server/.env
+  cd /opt/fg-link-server
+  docker compose up -d --build
+  echo "FG Link server updated. Existing credentials were preserved."
+else
+  echo "Package verified. Starting FG Link VPS installer..."
+  echo
+  bash "$INSTALLER" </dev/tty
+fi
