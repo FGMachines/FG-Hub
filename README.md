@@ -65,37 +65,13 @@
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    S[MTTL-W01] <-->|Local TCP 10086| A[FG Link Android Controller]
-    R[Remote phone] <-->|ZeroTier / private network| A
-    A -->|Outbound HTTPS| V[FG Link VPS]
-    P[Admin / remote management] -->|HTTPS| V
-    V -->|Queued authenticated action| A
-    A -->|Local MTTL command| S
-```
+FG Link uses a **Local-First** design. Local control remains independent, while remote-access layers are optional additions.
 
-### Why Local-First?
-
-لو الإنترنت أو الـVPS توقف، التحكم المحلي لا يتحول إلى وظيفة معطلة. ZeroTier يظل مسارًا مستقلًا للتحكم البعيد، والـVPS يعمل كطبقة إضافية للإدارة والمزامنة.
+> **Private infrastructure:** VPS deployment, administration-panel installation, server source code, deployment scripts, credentials and internal backend configuration are private FG Machines engineering assets and are not published in this distribution repository.
 
 ## VPS status
 
-**FG Link VPS Relay** يعمل حاليًا بالطريقة التالية:
-
-```
-Remote/Admin → HTTPS VPS → Android Controller → MTTL-W01
-```
-
-يعني ظهور المشترك Online على السيرفر يسمح بإرسال أوامر من لوحة الخادم طالما **هاتف الـController داخل الموقع شغال ومتصل بالمشترك والإنترنت**.
-
-أما المسار:
-
-```
-MTTL-W01 → Internet → VPS:10086
-```
-
-فهو **VPS Direct**، وموجود كمسار اختباري فقط حاليًا. لا يتم تقديمه للمستخدمين كميزة عامة قبل اكتمال اختبارات الأجهزة والأمان والاستقرار.
+VPS/Cloud capabilities are currently staged and tested separately from the public Android release. **VPS Direct remains under testing and is not a public feature yet.** Existing Router/LAN/ZeroTier modes continue to work independently.
 
 ## Three setup modes
 
@@ -144,7 +120,6 @@ Read: [Authenticity & verification](docs/AUTHENTICITY.md) • [APK hardening](do
 
 - 📘 [الكتاب العربي المصوّر — PDF](https://github.com/FGMachines/FG-Hub/releases/download/v1.6.14/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)
 - 📖 [دليل الاستخدام العربي — Markdown](docs/USER-GUIDE-AR.md)
-- 🧩 [Server architecture — Arabic](docs/SERVER-ARCHITECTURE-AR.md)
 - 🔐 [Authenticity & verification](docs/AUTHENTICITY.md)
 
 ## Official FG Machines links
