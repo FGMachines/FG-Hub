@@ -1,0 +1,39 @@
+name: Publish FG Link 1.6.14 Release
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.release-trigger/1.6.14'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify public files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s releases/1.6.14/FG-Link-1.6.14-Hardened-Signed.apk
+          test -s docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf
+          sha256sum releases/1.6.14/FG-Link-1.6.14-Hardened-Signed.apk
+          sha256sum docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v1.6.14"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG"               releases/1.6.14/FG-Link-1.6.14-Hardened-Signed.apk               docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf               releases/1.6.14/SHA256SUMS.txt               releases/1.6.14/CERTIFICATE.txt               --clobber
+          else
+            gh release create "$TAG"               releases/1.6.14/FG-Link-1.6.14-Hardened-Signed.apk               docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf               releases/1.6.14/SHA256SUMS.txt               releases/1.6.14/CERTIFICATE.txt               --title "FG Link 1.6.14"               --notes "Official FG Machines Android release. Includes the signed APK, Arabic illustrated user guide, checksum and signing certificate."
+          fi
