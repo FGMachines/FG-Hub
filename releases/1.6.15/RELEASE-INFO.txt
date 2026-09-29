@@ -1,0 +1,6 @@
+FG Link 1.6.15 Hardened Signed
+Package: com.fgmachines.rck
+Version code: 44
+Publisher: FG Machines
+R8 optimized: yes
+Signed: yes
