@@ -19,13 +19,26 @@
 
 ### FG Link 1.6.14 — Build 43
 
-- **APK الرسمي الموقّع:** يجري نشر ملف 1.6.14 إلى قسم Releases. النسخة العامة الموجودة حاليًا في المستودع: [1.6.13](releases/1.6.13/FG-Link-1.6.13-Hardened-Signed.apk)
-- **الكتاب العربي المصوّر:** سيتم وضعه في `docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf`
+- 📱 **[تحميل APK الرسمي الموقّع - FG Link 1.6.14](releases/1.6.14/FG-Link-1.6.14-Hardened-Signed.apk?raw=1)**
+- 📘 **[تحميل الكتاب العربي المصوّر - 54 صفحة](docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf?raw=1)**
+- 🔐 **[التحقق من الأصالة والتوقيع](docs/AUTHENTICITY.md)**
 - **Package:** `com.fgmachines.rck`
 - **APK 1.6.14 SHA-256:** `9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94`
+- **Illustrated guide SHA-256:** `668e5aa34e9b5a3b85f623a7012c8257c4530c3abac8bdd26428716a269ee10e`
 - **Signing certificate SHA-256:** `b9ca4a23be53f161a47b5aaf97023d2bbbeebdaf671337d2466fb74cc1f29fdf`
 
 > نزّل النسخة فقط من صفحة FG Machines الرسمية، وراجع الـSHA-256 والتوقيع قبل التثبيت.
+
+## Start here
+
+| الملف | الاستخدام |
+|---|---|
+| **FG-Link-1.6.14-Hardened-Signed.apk** | التطبيق الرسمي الموقّع والمصغّر/المشوّش عبر R8 |
+| **الدليل العربي المصوّر - 54 صفحة** | شرح كامل بالصور والأسهم: Router، هاتف واحد، هاتفين، ZeroTier، IR، الأعطال والاستعادة الآمنة |
+| **SHA256SUMS.txt** | التحقق من أن APK لم يتم تعديله |
+| **AUTHENTICITY.md** | بصمة شهادة التوقيع وسجل الإصدار الرسمي |
+
+> **VPS Direct ما زال Testing / Inspection وليس خدمة عامة.** النظام الحالي لا يعتمد عليه، وRouter/LAN/ZeroTier تظل المسارات المتاحة للمستخدمين.
 
 ## What FG Link does
 
@@ -117,10 +130,15 @@ FG Link يحتوي على وظائف ريموت للأجهزة المتوافق�
 
 الحماية ترفع تكلفة الهندسة العكسية ولا تجعلها مستحيلة. المرجع الحقيقي للنسخة الرسمية هو توقيع FG Machines + الـhash + سجل النشر.
 
-Read: [Authenticity & verification](docs/AUTHENTICITY.md) • [Security policy](SECURITY.md)
+Read: [Authenticity & verification](docs/AUTHENTICITY.md) • [APK hardening](docs/APK-HARDENING.md) • [Security policy](SECURITY.md)
+
+### Public distribution vs engineering source
+
+هذا المستودع العام مخصص **للتوزيع الرسمي والتوثيق والتحقق من الإصدارات**. المصدر الهندسي، خرائط R8، مفاتيح التوقيع، أسرار CI والبنية الداخلية غير الضرورية للمستخدم لا تُنشر هنا. هذا لا يجعل الهندسة العكسية مستحيلة، لكنه يقلل سطح التسريب ويزيد تكلفة إعادة التغليف أو انتحال النسخة الرسمية.
 
 ## Documentation
 
+- 📘 [الكتاب العربي المصوّر — PDF، 54 صفحة](docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)
 - 📖 [دليل الاستخدام العربي — Markdown](docs/USER-GUIDE-AR.md)
 - 🧩 [Server architecture — Arabic](docs/SERVER-ARCHITECTURE-AR.md)
 - 🔐 [Authenticity & verification](docs/AUTHENTICITY.md)
