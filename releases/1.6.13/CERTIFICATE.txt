@@ -1,0 +1,18 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v3.2 scheme (APK Signature Scheme v3.2): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+V2 Signer: certificate DN: CN=FG Machines, OU=Software Release, O=FG Machines, C=EG
+V2 Signer: certificate SHA-256 digest: b9ca4a23be53f161a47b5aaf97023d2bbbeebdaf671337d2466fb74cc1f29fdf
+V2 Signer: certificate SHA-1 digest: 52f3382dd1b602b4f08037115b9391fb4b206d12
+V2 Signer: certificate MD5 digest: 8836eee367f5451c1e949ce55eaae3a1
+V2 Signer: key algorithm: RSA
+V2 Signer: key size (bits): 4096
+V2 Signer: public key SHA-256 digest: b029aaa19aa3b8a5c1e62f67d4e0598554edead0c222111960a6a2ce0a018818
+V2 Signer: public key SHA-1 digest: 850dfa54fd4765730ab2c16af0599fe717b3463b
+V2 Signer: public key MD5 digest: 8ee0f61e781ac7da271bec3f153107e1
