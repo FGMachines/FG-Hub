@@ -1,0 +1,44 @@
+name: Publish FG Link 1.6.14 Android
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/publish-android-1.6.14.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download signed 1.6.14 build artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://sdmntpreastus.oaiusercontent.com/files/00000000-9b6c-81f9-8049-ca481bdfbb0a/raw?se=2026-09-29T15%3A27%3A31Z&sp=r&sv=2026-02-06&sr=b&scid=03b32bcb-e330-52cc-afd3-6a055a02bff9&skoid=38550de5-1fab-49d1-9ebb-83af5557cc43&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-29T14%3A14%3A31Z&ske=2026-09-30T14%3A14%3A31Z&sks=b&skv=2026-02-06&sig=HF1fK4cz98rcKLyBfq22uK6YJk68pVnXdcPvndzs2bo%3D'
+          curl -fL --retry 3 --connect-timeout 20 "$URL" -o /tmp/fg-link.zip
+          rm -rf /tmp/fg-link
+          mkdir -p /tmp/fg-link
+          unzip -q /tmp/fg-link.zip -d /tmp/fg-link
+          echo '9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94  /tmp/fg-link/FG-Link-1.6.14-Hardened-Signed.apk' | sha256sum -c -
+          mkdir -p releases/1.6.14
+          cp /tmp/fg-link/FG-Link-1.6.14-Hardened-Signed.apk releases/1.6.14/
+          cp /tmp/fg-link/CERTIFICATE.txt releases/1.6.14/
+          cp /tmp/fg-link/RELEASE-INFO.txt releases/1.6.14/
+          cp /tmp/fg-link/SHA256SUMS.txt releases/1.6.14/
+
+      - name: Commit official package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'FG Machines Release Bot'
+          git config user.email 'fgmachines@proton.me'
+          git add releases/1.6.14
+          git commit -m 'Publish FG Link Android 1.6.14 build 43'
+          git push
