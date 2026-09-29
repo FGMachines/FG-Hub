@@ -25,7 +25,7 @@
 - 🧾 **[سجل النشر والأصالة الرسمي](PROVENANCE.md)**
 - **Package:** `com.fgmachines.rck`
 - **APK 1.6.14 SHA-256:** `9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94`
-- **Illustrated guide SHA-256:** `0098d5ba5567321158c93844c57cd9a50f34ab84bdeca2961912a5a6529939fb`
+- **Illustrated guide SHA-256:** `b9579a9d8daad140de79202ecaf0b5f36f27b1c863db826c0232f537764dacb2`
 - **Signing certificate SHA-256:** `b9ca4a23be53f161a47b5aaf97023d2bbbeebdaf671337d2466fb74cc1f29fdf`
 
 > نزّل النسخة فقط من صفحة FG Machines الرسمية، وراجع الـSHA-256 والتوقيع قبل التثبيت.

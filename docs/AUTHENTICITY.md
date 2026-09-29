@@ -37,6 +37,6 @@ Git commit history, release artifacts, SHA-256 values and the stable signing cer
 
 - File: `docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf`
 - Pages: **55**
-- SHA-256: `0098d5ba5567321158c93844c57cd9a50f34ab84bdeca2961912a5a6529939fb`
+- SHA-256: `b9579a9d8daad140de79202ecaf0b5f36f27b1c863db826c0232f537764dacb2`
 
 The guide contains the illustrated Router, one-phone, two-phone and ZeroTier setup flows, IR remote requirements, diagnostics, developer/follow-up information, and safe credential recovery guidance. VPS Direct is explicitly marked as **testing / not public**.
