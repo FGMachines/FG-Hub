@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="1.6.11"
+VERSION="1.6.12"
 BASE_URL="https://raw.githubusercontent.com/FGMachines/FG-Hub/main/server/${VERSION}"
 
 if [ "${EUID}" -ne 0 ]; then
