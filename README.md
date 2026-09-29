@@ -19,8 +19,8 @@
 
 ### FG Link 1.6.14 — Build 43
 
-- 📱 **[تحميل APK الرسمي الموقّع - FG Link 1.6.14](releases/1.6.14/FG-Link-1.6.14-Hardened-Signed.apk?raw=1)**
-- 📘 **[تحميل الكتاب العربي المصوّر - 54 صفحة](docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf?raw=1)**
+- 📱 **[تحميل APK الرسمي الموقّع - FG Link 1.6.14](https://github.com/FGMachines/FG-Hub/releases/download/v1.6.14/FG-Link-1.6.14-Hardened-Signed.apk)**
+- 📘 **[تحميل الكتاب العربي المصوّر](https://github.com/FGMachines/FG-Hub/releases/download/v1.6.14/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)**
 - 🔐 **[التحقق من الأصالة والتوقيع](docs/AUTHENTICITY.md)**
 - **Package:** `com.fgmachines.rck`
 - **APK 1.6.14 SHA-256:** `9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94`
@@ -28,6 +28,10 @@
 - **Signing certificate SHA-256:** `b9ca4a23be53f161a47b5aaf97023d2bbbeebdaf671337d2466fb74cc1f29fdf`
 
 > نزّل النسخة فقط من صفحة FG Machines الرسمية، وراجع الـSHA-256 والتوقيع قبل التثبيت.
+
+> **روابط التحميل المباشر:** هذه الروابط تستخدم GitHub Release Assets ولا تحتاج فتح الملف داخل واجهة المستودع أولًا. إذا كان متصفح الهاتف يمنع تنزيل APK، اختر Download / تنزيل من قائمة المتصفح.
+
+- **[صفحة الإصدار الرسمية v1.6.14](https://github.com/FGMachines/FG-Hub/releases/tag/v1.6.14)**
 
 ## Start here
 
@@ -138,7 +142,7 @@ Read: [Authenticity & verification](docs/AUTHENTICITY.md) • [APK hardening](do
 
 ## Documentation
 
-- 📘 [الكتاب العربي المصوّر — PDF، 54 صفحة](docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)
+- 📘 [الكتاب العربي المصوّر — PDF](https://github.com/FGMachines/FG-Hub/releases/download/v1.6.14/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf)
 - 📖 [دليل الاستخدام العربي — Markdown](docs/USER-GUIDE-AR.md)
 - 🧩 [Server architecture — Arabic](docs/SERVER-ARCHITECTURE-AR.md)
 - 🔐 [Authenticity & verification](docs/AUTHENTICITY.md)
