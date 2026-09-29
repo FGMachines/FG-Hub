@@ -20,7 +20,7 @@ SHA-256:
 
 رابط التحميل المباشر من GitHub:
 
-https://raw.githubusercontent.com/FGMachines/FG-Hub/main/releases/1.6.13/FG-Link-1.6.14-Hardened-Signed.apk
+https://github.com/FGMachines/FG-Hub/releases/download/v1.6.14/FG-Link-1.6.14-Hardened-Signed.apk
 
 تحقق من SHA-256 قبل التثبيت، ولا تثبت نسخة معاد توقيعها من طرف ثالث.
 
