@@ -1,42 +1,22 @@
-# FG Link — Authenticity & Verification
+# FG Link — التحقق من النسخة الرسمية
 
-This page records the identity of the official FG Machines Android artifact published on **2026-09-29**.
+الإصدار الحالي **2.1.2 / versionCode 47**، الناشر **FG Machines**، الحزمة `com.fgmachines.rck`.
 
-## Official artifact
-
-- Product: **FG Link**
-- Version: **1.6.14**
-- Version code: **43**
-- Android package: `com.fgmachines.rck`
-- Publisher: **FG Machines**
-- APK SHA-256: `9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94`
-
-## Signing identity
-
-- Certificate DN: `CN=FG Machines, OU=Software Release, O=FG Machines, C=EG`
-- Certificate SHA-256: `b9ca4a23be53f161a47b5aaf97023d2bbbeebdaf671337d2466fb74cc1f29fdf`
-- Public-key SHA-256: `b029aaa19aa3b8a5c1e62f67d4e0598554edead0c222111960a6a2ce0a018818`
-- Key algorithm: **RSA 4096-bit**
-- APK Signature Scheme: **v2**
-
-## Verify the download
+- [تحميل APK الرسمي](https://github.com/FGMachines/FG-Hub/releases/download/v2.1.2/FG-Link-2.1.2-v47.apk)
+- APK SHA-256: `07c9307f9657b02c6893174a37f2a60701b0afae4c30985877599cc5abfeff0f`
+- شهادة التوقيع SHA-256: `b9ca4a23be53f161a47b5aaf97023d2bbbeebdaf671337d2466fb74cc1f29fdf`
+- شهادة الناشر: `CN=FG Machines, OU=Software Release, O=FG Machines, C=EG`
 
 ```bash
-sha256sum FG-Link-1.6.14-Hardened-Signed.apk
-apksigner verify --verbose --print-certs FG-Link-1.6.14-Hardened-Signed.apk
+sha256sum FG-Link-2.1.2-v47.apk
+apksigner verify --verbose --print-certs FG-Link-2.1.2-v47.apk
 ```
 
-A copied filename, icon or screenshot is not sufficient to establish authenticity. Verify the APK hash and the FG Machines signing certificate.
+قارن بصمة الملف وبصمة الشهادة بالقيم أعلاه. اسم الملف أو الأيقونة وحدهما لا يثبتان الأصالة. التوقيع هو نفسه المستخدم للنسخة الرسمية السابقة، مع رقم بناء أعلى، ليُثبّت كتحديث مباشر حين يكون رقم النسخة المثبتة أقل من 47.
 
-## Publication record
+المصدر البرمجي ومفتاح التوقيع وكلمات المرور وخرائط التشويش لا تُنشر. راجع [سجل النشر](../PROVENANCE.md) و[الدليل المصوّر](USER-GUIDE-AR.md).
 
-Git commit history, release artifacts, SHA-256 values and the stable signing certificate create a verifiable public publication record for FG Machines releases and help distinguish official builds from repackaged or re-signed copies.
+## النسخة السابقة المؤرشفة
 
+إصدار 1.6.14 / Build 43: `FG-Link-1.6.14-Hardened-Signed.apk`، SHA-256: `9b7c38657835d2f323f789494d36b57b0f12757964a1c20a3f69af91b682ee94`. [صفحة الإصدار المؤرشف](https://github.com/FGMachines/FG-Hub/releases/tag/v1.6.14). دليله القديم لا يصف واجهة Direct VPS في 2.1.2.
 
-## Illustrated Arabic guide
-
-- File: `docs/FG-Link-User-Guide-AR-Illustrated-v1.6.14.pdf`
-- Pages: **55**
-- SHA-256: `b9579a9d8daad140de79202ecaf0b5f36f27b1c863db826c0232f537764dacb2`
-
-The guide contains the illustrated Router, one-phone, two-phone and ZeroTier setup flows, IR remote requirements, diagnostics, developer/follow-up information, and safe credential recovery guidance. VPS Direct is explicitly marked as **testing / not public**.

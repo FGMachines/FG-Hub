@@ -1,3 +1,4 @@
-# FG Link screenshots
+# صور واجهة FG Link
 
-Real screenshots from the final verified FG Link 1.6.8 build will be stored here. No mockups are used in the user guide.
+مجلد `2.1.2` يحتوي أربع لقطات فعلية من اختبار واجهة الإصدار 2.1.2 باللغة الإنجليزية: أجهزتي المحلي، Direct VPS قبل تسجيل الدخول، المنزل، والإعدادات. لا توجد أجهزة متصلة في هذه اللقطات ولا تتضمن كلمات مرور أو بيانات حسابات. الشرح العربي في [دليل الاستخدام](../USER-GUIDE-AR.md).
+

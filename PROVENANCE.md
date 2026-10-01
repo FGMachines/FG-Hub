@@ -1,3 +1,30 @@
+# FG Link — سجل النشر الرسمي
+
+مستودع التوزيع والتوثيق العام: **FGMachines/FG-Hub**. الناشر: **FG Machines**. المصدر الهندسي للتطبيق والخادم ومفاتيح التوقيع تبقى خاصة.
+
+## الإصدار الحالي
+
+| البيان | القيمة |
+|---|---|
+| الإصدار | 2.1.2 |
+| versionCode | 47 |
+| الحزمة | `com.fgmachines.rck` |
+| Release | [v2.1.2](https://github.com/FGMachines/FG-Hub/releases/tag/v2.1.2) |
+| APK | `FG-Link-2.1.2-v47.apk` |
+| SHA-256 | `07c9307f9657b02c6893174a37f2a60701b0afae4c30985877599cc5abfeff0f` |
+| شهادة التوقيع SHA-256 | `b9ca4a23be53f161a47b5aaf97023d2bbbeebdaf671337d2466fb74cc1f29fdf` |
+
+[التحقق من الأصالة](docs/AUTHENTICITY.md) · [دليل الواجهة الجديدة المصوّر](docs/USER-GUIDE-AR.md) · [التغييرات](releases/2.1.2/RELEASE_NOTES.md).
+
+إصدار 2.1.2 يدمج Direct VPS في أجهزتي ويستخدم الحساب الشخصي والصلاحيات التي يفرضها الخادم. إرسال البريد يحتاج تجهيز SMTP على الخادم. التوثيق والصور هنا لا يتضمنان بيانات عملاء ولا كلمات مرور. تاريخ GitHub Releases هو مرجع وقت النشر.
+
+## سجل الإصدار السابق 1.6.14
+
+المحتوى التالي محفوظ كتاريخ للإصدار السابق فقط؛ وصف Direct VPS التجريبي فيه لا يصف الإصدار الحالي.
+
+<details>
+<summary>عرض سجل 1.6.14 المؤرشف</summary>
+
 # FG Link — Official Publication & Provenance Record
 
 This repository is the official public distribution and documentation channel for **FG Link**, published by **FG Machines**.
@@ -61,3 +88,7 @@ The Arabic user guide documents the supported operating modes, ZeroTier remote a
 ## Attribution
 
 When redistributing an unmodified official binary or documentation file, preserve the **FG Machines** publisher identification and the original verification data. Modified or re-signed APKs must not be represented as official FG Machines builds.
+
+
+</details>
+

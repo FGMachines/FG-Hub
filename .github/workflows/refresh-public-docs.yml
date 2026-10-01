@@ -1,0 +1,29 @@
+name: Refresh FG Link public presentation
+on:
+  push:
+    branches: [main]
+    paths: ['releases/2.1.2/RELEASE_NOTES.md', '.github/workflows/refresh-public-docs.yml']
+permissions:
+  contents: write
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh existing release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release view v2.1.2 --json assets --jq '.assets[].name' | grep -Fx 'FG-Link-2.1.2-v47.apk'
+          gh release edit v2.1.2 --title "FG Link 2.1.2 — Build 47" --notes-file releases/2.1.2/RELEASE_NOTES.md --latest
+      - name: Update repository About description if token permits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api --method PATCH "repos/$GITHUB_REPOSITORY" -f description='FG Link 2.1.2: smart power control, LAN/ZeroTier, personal Direct VPS, email alerts and IR remote. Official signed APK and illustrated guides; source code stays private.' -f homepage='https://fgmachines.org' > /tmp/repository-update.json; then
+            echo 'Repository About updated.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Repository About could not be updated with the Actions token. README and release notes are updated; changing About requires repository administration permission.' >> "$GITHUB_STEP_SUMMARY"
+          fi
