@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="300" viewBox="0 0 1280 300" role="img" aria-labelledby="title desc">
+  <title id="title">FG Link — التحكم في مشتركاتك من موبايلك</title>
+  <desc id="desc">صور حقيقية من التطبيق وشرح عربي خطوة بخطوة لإصدار 2.1.5</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#061521"/>
+      <stop offset="0.55" stop-color="#0b2233"/>
+      <stop offset="1" stop-color="#07131d"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#25e7ef"/>
+      <stop offset="1" stop-color="#74ff5c"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect x="8" y="8" width="1264" height="284" rx="34" fill="url(#bg)" stroke="#233d50" stroke-width="2"/>
+  <rect x="40" y="40" width="1200" height="4" rx="2" fill="url(#accent)" opacity="0.95" filter="url(#glow)"/>
+
+  <g font-family="Arial, Tahoma, sans-serif" text-anchor="middle">
+    <text x="640" y="112" fill="#ffffff" font-size="44" font-weight="800" direction="rtl">FG Link — التحكم في مشتركاتك من موبايلك</text>
+    <text x="640" y="168" fill="#c9d8e3" font-size="25" font-weight="600" direction="rtl">صور حقيقية من التطبيق + شرح عربي خطوة بخطوة</text>
+  </g>
+
+  <g font-family="Arial, Tahoma, sans-serif" font-size="18" font-weight="700" text-anchor="middle">
+    <rect x="475" y="208" width="330" height="48" rx="24" fill="#0b1c28" stroke="#26e7ef" stroke-width="2"/>
+    <text x="640" y="239" fill="#26e7ef" direction="rtl">الإصدار الحالي: FG Link 2.1.5</text>
+  </g>
+</svg>
